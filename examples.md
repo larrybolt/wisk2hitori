@@ -1,4 +1,9 @@
 # Examples
+- [Mathematics and Sudokus, techniques](http://www.math.cornell.edu/~mec/Summer2009/meerkamp/Site/Introduction.html)
+- [A Matlab-based sudoku solver](http://www2.mathematik.hu-berlin.de/~pevans/personal/sudoku/)
+- [Differences between Scilab and Mathlab](http://pages.cs.aueb.gr/~yiannisk/aps-06/SCILAB_HELP/matlabvsscilab_html.htm)
+- [Thoughts on developing a SUDOKU solver and a MATLAB implementation of one](https://sites.google.com/site/edmarkovich2/matlab_doku)
+- [Convert Mathlab files to Scilab](http://help.scilab.org/docs/5.5.2/en_US/mfile2sci.html)
 
 ## Solving Sudoku Using Recursive Backtracking
 ```Matlab
@@ -100,3 +105,107 @@ end
 ```
 
 [source](http://www.mathworks.com/matlabcentral/fileexchange/8083-matlab-sudoku-solver)
+
+## Sudoku solver in C
+```C
+#include "stdio.h"
+int rec_sudoku(int (&mat)[9][9],int depth)
+{
+    int sol[9][9][10]; //for eliminating
+    if(depth == 0) return 1;
+    for(int i=0;i<9;i++)
+    {
+        for(int j=0;j<9;j++)
+        {
+            sol[i][j][9]=9;
+            for(int k=0;k<9;k++)
+            {
+                if(mat[i][j]) sol[i][j][k]=0;
+                else sol[i][j][k]=1;
+            }
+        }
+    }
+    for(int i=0;i<9;i++)
+    {
+        for(int j=0;j<9;j++)
+        {
+            if(mat[i][j] == 0) continue;
+            for(int k=0;k<9;k++)
+            {
+                if(sol[i][k][mat[i][j]-1])
+                {
+                    if(--sol[i][k][9]==0) return 0;
+                    sol[i][k][mat[i][j]-1]=0;
+                }
+                if(sol[k][j][mat[i][j]-1])
+                {
+                    if(--sol[k][j][9]==0) return 0;
+                    sol[k][j][mat[i][j]-1]=0;
+                }
+            }
+            for(int k=(i/3)*3;k<(i/3+1)*3;k++)
+            {
+                for(int kk=(j/3)*3;kk<(j/3+1)*3;kk++)
+                {
+                    if(sol[k][kk][mat[i][j]-1])
+                    {
+                        if(--sol[k][kk][9]==0) return 0;
+                        sol[k][kk][mat[i][j]-1]=0;
+                    }
+                }
+            }
+        }
+    }
+    for(int c=1;c<=9;c++)
+    {
+        for(int i=0;i<9;i++)
+        {
+            for(int j=0;j<9;j++)
+            {
+                if(sol[i][j][9] != c) continue;
+                for(int k=0;k<9;k++)
+                {
+                    if(sol[i][j][k] != 1) continue;
+                    mat[i][j]=k+1;
+                    if(rec_sudoku(mat,depth-1)) return 1;
+                    mat[i][j]=0;
+                }
+                return 0;
+            }
+        }
+    }
+    return 0;
+}
+int main(void)
+{
+    int matrix[9][9] =
+    {
+        {1,0,0,0,0,7,0,9,0},
+        {0,3,0,0,2,0,0,0,8},
+        {0,0,9,6,0,0,5,0,0},
+        {0,0,5,3,0,0,9,0,0},
+        {0,1,0,0,8,0,0,0,2},
+        {6,0,0,0,0,4,0,0,0},
+        {3,0,0,0,0,0,0,1,0},
+        {0,4,0,0,0,0,0,0,7},
+        {0,0,7,0,0,0,3,0,0}
+    };
+    int d=0;
+    for(int i=0;i<9;i++) for(int j=0;j<9;j++) if(matrix[i][j] == 0) d++;
+    if(rec_sudoku(matrix,d)==0)
+    {
+        printf("no solution");
+        return 0;
+    }
+    for(int i=0;i<9;i++)
+    {
+        for(int j=0;j<9;j++)
+        {
+            printf("%i ",matrix[i][j]);
+        }
+        printf("\n");
+    }
+    return 1;
+}
+```
+[stackoverflow questions, also has other solutions](http://stackoverflow.com/questions/4514994/sudoku-solver-evaluation-function/4515064#4515064)
