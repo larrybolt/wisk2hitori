@@ -60,7 +60,7 @@ end % sudoku
 source: [MathWorks: Solving Sudoku with MATLAB](http://nl.mathworks.com/company/newsletters/articles/solving-sudoku-with-matlab.html) 
 
 ## MATLAB Sudoku Solver
-```Mathlab
+```Matlab
 function S = sodoku(M,S)
 %[S,Mout] = sodoku(M,[S])
 %
