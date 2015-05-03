@@ -63,13 +63,17 @@ endfunction
 
 // this will be the solving function
 function [output]=solveSudoku(input)
-  // nog niks
-  for i = [1:9]
-    for j = [1:9]
-      if input(i,j) == 0
-        pos = getPossible(input,i,j)
-        if size(pos) == 1
-          input(i,j) = getPossible(input,i,j)
+  filledIn = 1
+  while filledIn > 0
+    filledIn = 0
+    for i = [1:9]
+      for j = [1:9]
+        if input(i,j) == 0
+          pos = getPossible(input,i,j)
+          if size(pos) == 1
+            input(i,j) = getPossible(input,i,j)
+            filledIn = filledIn + 1
+          end
         end
       end
     end
