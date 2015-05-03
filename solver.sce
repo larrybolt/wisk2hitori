@@ -48,15 +48,29 @@ function [possibilities]=getPossible(sudoku,i,j)
     // TODO: remove for performance afterwards
     messagebox("this row is not zero!!")
   end
-  possibilities=setdiff([1:9],sudoku(i,:))
+  // this checks what values are possible in this row
+  // possibilities=setdiff([1:9],sudoku(i,:))
+  // the next one checks both the row and collum, and takes the intersect
+  possibilities=intersect(setdiff([1:9], getPart(sudoku,i,j)),intersect(setdiff([1:9],sudoku(:,j)),setdiff([1:9],sudoku(i,:))))
 endfunction
+
+// function to get the 3*3 part for a possision
+function [res]=getPart(sudoku,i,j)
+  i = ceil(i/3)-1
+  j = ceil(j/3)-1
+  res = sudoku(1+(3*i):3+(3*i),1+(3*j):3+(3*j))
+endfunction
+
 // this will be the solving function
 function [output]=solveSudoku(input)
   // nog niks
   for i = [1:9]
     for j = [1:9]
       if input(i,j) == 0
-        input(i,j) = getPossible(input,i,j)
+        pos = getPossible(input,i,j)
+        if size(pos) == 1
+          input(i,j) = getPossible(input,i,j)
+        end
       end
     end
   end
