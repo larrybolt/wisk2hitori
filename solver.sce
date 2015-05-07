@@ -1,12 +1,14 @@
 mode(0);
-exec('testSudokus.sce');
+warning('off')
+//exec('testSudokus.sce');
 
 // function to check if the sodoku is solved
-function [valid]=isValid(input)
+function [valid]=controleSudoku(input)
   valid=%t
   if sum(input(:,:)) <> 405 
     //messagebox("total sum is "+string(sum(input(:,:))))
     valid=%f 
+    return
   end
   for i = [1:9]
     // scilab rows
@@ -14,17 +16,21 @@ function [valid]=isValid(input)
     if sum(t) <> 45
       //messagebox("sum for "+string(sum(input(:,:)))
       valid=%f
+      return
     end
     if size(unique(t)) <> 9
       valid=%f
+      return
     end
     // scilab collumns
     t = input(:,i)
     if sum(t) <> 45
       valid=%f
+      return
     end
     if size(unique(t)) <> 9
       valid=%f
+      return
     end
   end
   for i = [0:2]
@@ -32,9 +38,11 @@ function [valid]=isValid(input)
       t = input(1+(3*i):3+(3*i),1+(3*j):3+(3*j))
       if sum(t) <> 45
         valid=%f
+        return
       end
       if size(unique(t)) <> 9
         valid=%f
+        return
       end
     end
   end
@@ -63,6 +71,33 @@ endfunction
 
 // this will be the solving function
 function [output]=solveSudoku(input)
+  stage1 = solveStage1(input)
+  if controleSudoku(stage1)
+    output = stage1
+    return
+  end
+
+  stage2 = solveStage2(stage1)
+  if controleSudoku(stage2)
+    output = stage2
+    return
+  end
+
+  values = list()
+  for i = [1:9]
+    for j = [1:9]
+      if input(i,j) == 0
+        pos = getPossible(input,i,j)
+        //disp([i,j,size(pos)])
+        values($+1) = cat(2,[i,j],pos)
+      end
+    end
+  end
+
+  output=values
+endfunction
+
+function [output]=solveStage1(input)
   filledIn = 1
   while filledIn > 0
     filledIn = 0
@@ -71,7 +106,7 @@ function [output]=solveSudoku(input)
         if input(i,j) == 0
           pos = getPossible(input,i,j)
           if size(pos) == 1
-            input(i,j) = getPossible(input,i,j)
+            input(i,j) = pos
             filledIn = filledIn + 1
           end
         end
@@ -81,6 +116,23 @@ function [output]=solveSudoku(input)
   output=input
 endfunction
 
-// test cases, later pas includen enzo
-//exec('solveSudoku2.sce')
-//exec('controleSudoku2.sce')
+function [output]=solveStage2(input)
+  filledIn = 1
+  while filledIn > 0
+    filledIn = 0
+    for i = [1:9]
+      for j = [1:9]
+        if input(i,j) == 0
+          pos = getPossible(input,i,j)
+          if size(pos) < 3 & size(pos) > 0
+            //disp(pos)
+            input(i,j) = pos(1)
+            filledIn = filledIn + 1
+          end
+        end
+      end
+    end
+  end
+  output=input
+endfunction
+
