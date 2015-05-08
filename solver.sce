@@ -1,6 +1,5 @@
 mode(0);
 warning('off')
-//exec('testSudokus.sce');
 
 // function to check if the sodoku is solved
 function [valid]=controleSudoku(input)
@@ -77,7 +76,7 @@ function [output]=solveSudoku(input)
     return
   end
 
-  stage2 = solveStage2(stage1)
+  stage2 = solveStage2(stage1,%f)
   if controleSudoku(stage2)
     output = stage2
     return
@@ -95,6 +94,7 @@ function [output]=solveSudoku(input)
   end
 
   output=values
+  output=%f
 endfunction
 
 function [output]=solveStage1(input)
@@ -116,19 +116,35 @@ function [output]=solveStage1(input)
   output=input
 endfunction
 
-function [output]=solveStage2(input)
-  filledIn = 1
-  while filledIn > 0
-    filledIn = 0
-    for i = [1:9]
-      for j = [1:9]
-        if input(i,j) == 0
-          pos = getPossible(input,i,j)
-          if size(pos) < 3 & size(pos) > 0
-            //disp(pos)
-            input(i,j) = pos(1)
-            filledIn = filledIn + 1
+function [output]=solveStage2(input,bak)
+  for i = [1:9]
+    for j = [1:9]
+      if input(i,j) == 0
+        pos = getPossible(input,i,j)
+        if size(pos) == 0
+          // something was off
+          output = %f
+          //disp("stuck!")
+          //disp([i,j])
+          return
+        elseif size(pos) == 1
+          input(i,j) = pos
+          //disp("filled in "+string(pos)+" at "+string(i)+string(j))
+        else
+          //disp("possibilities for "+string(i)+","+string(j)); disp(pos);
+          for k = pos
+            input(i,j) = k
+            //disp("trying "+string(k));
+            testinput = solveStage2(input,%t)
+            if testinput <> %f
+              output = testinput
+              return
+              //disp("found it was "+string(k))
+              break
+            end
           end
+          output=%f
+          return
         end
       end
     end
