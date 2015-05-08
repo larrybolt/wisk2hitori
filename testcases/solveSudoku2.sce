@@ -1,3 +1,5 @@
+mode(-1);
+warning('off');
 // Really easy
 
 S1 = [8 7 1 2 3 5 0 9 4;

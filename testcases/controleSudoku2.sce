@@ -1,3 +1,5 @@
+mode(-1);
+warning('off');
 // correct opgeloste sudokus
 
 S1 = [8 7 1 2 3 5 6 9 4;
