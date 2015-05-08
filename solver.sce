@@ -53,7 +53,9 @@ function [possibilities]=getPossible(sudoku,i,j)
   if sudoku(i,j) <> 0
     // only zero rows should be filled in 
     // TODO: remove for performance afterwards
-    messagebox("this row is not zero!!")
+    //messagebox("this row is not zero!!")
+    possibilities = []
+    return
   end
   // this checks what values are possible in this row
   // possibilities=setdiff([1:9],sudoku(i,:))
@@ -108,6 +110,36 @@ function [output]=solveStage1(input)
           if size(pos) == 1
             input(i,j) = pos
             filledIn = filledIn + 1
+          end
+        end
+      end
+    end
+  end
+  output=input
+endfunction
+
+function [output]=solveStage3(input)
+  filledIn = 1
+  while filledIn > 0
+    filledIn = 0
+    i = 1
+    for j = [1:9]
+      if input(i,j) == 0
+        pos = getPossible(input,i,j)
+        if size(pos) == 1
+          input(i,j) = pos
+          filledIn = filledIn + 1
+        elseif size(pos) > 1
+          for n = [1:9]
+            if input(i,n) == 0 & n <> j
+              posOther = getPossible(input,i,j)
+              disp(pos)
+              disp(posOther)
+              pos = setdiff(pos,posOther)
+            end
+          end
+          if size(pos) == 1
+            input(i,j) = pos
           end
         end
       end
