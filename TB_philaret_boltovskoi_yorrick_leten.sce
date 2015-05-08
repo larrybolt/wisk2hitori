@@ -81,12 +81,26 @@ endfunction
 function [output]=solveSudoku(input)
   state=input
 
-  state = solveEasy(state)
-  if controleSudoku(state)
-    output = state
-    //disp("easy")
-    return
+  // Solving with hypermat
+  prev=[]
+  changed=%t
+  while changed
+    prev = state
+    state=solveHyper(state);
+    if state == prev
+      changed=%f
+    end
   end
+  //output=state
+  //return
+  
+  //solveHyper does this too
+  //state = solveEasy(state)
+  //if controleSudoku(state)
+  //  output = state
+  //  //disp("easy")
+  //  return
+  //end
 
   state = solveRows(state)
   if controleSudoku(state)
@@ -129,6 +143,65 @@ function [output]=solveSudoku(input)
   end
   output=values
 endfunction
+
+function [output]=solveHyper(input)
+  // solutions matrix
+  sol = hypermat([9,9,9])
+
+  // find possibilities
+  for i = [1:9]
+    for j = [1:9]
+      if input(i,j) == 0
+        pos = getPossible(input,i,j)
+        for k = [1:9]
+          if length(find(pos==k,1)) == 1
+            sol(i,j,k)=1
+          end
+        end
+      end
+    end
+  end
+
+  // math
+  for i = [1:9]
+    for j = [1:9]
+      if input(i,j) == 0 & length(find(sol(i,j,:)==1)) > 1
+
+        //for n = [1:9]
+        //  if input(i,j) == 0 & n <> j
+        //    for m = [1:9]
+        //      if (sol(i,j,m) == 1 & sol(i,n,m) == 1) then sol(i,j,m) = 0; end
+        //    end
+        //  end
+        //end
+
+      end
+    end
+  end
+
+  // ignore any <0 cells
+  for i = [1:9]
+    for j = [1:9]
+      for k = [1:9]
+        if sol(i,j,k) < 0
+          sol(i,j,k) = 0
+        end
+      end
+    end
+  end
+
+  // reconstruct matrix with values filled in
+  for i = [1:9]
+    for j = [1:9]
+      cell = find(sol(i,j,:)==1)
+      if length(cell) == 1
+        input(i,j)=cell
+      end
+    end
+  end
+  output=input
+endfunction
+
 
 // Basic algo that should be able to solve the most simple ones
 // For each empty cell find possible values, if there's only
