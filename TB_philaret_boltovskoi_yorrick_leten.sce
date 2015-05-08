@@ -162,22 +162,30 @@ function [output]=solveHyper(input)
     end
   end
 
-  // math
-  for i = [1:9]
-    for j = [1:9]
-      if input(i,j) == 0 & length(find(sol(i,j,:)==1)) > 1
+  // math not enough time to implement :(
+  //for i = [1:9]
+  //  for j = [1:9]
+  //    if input(i,j) == 0 & length(find(sol(i,j,:)==1)) > 1
 
-        //for n = [1:9]
-        //  if input(i,j) == 0 & n <> j
-        //    for m = [1:9]
-        //      if (sol(i,j,m) == 1 & sol(i,n,m) == 1) then sol(i,j,m) = 0; end
-        //    end
-        //  end
-        //end
+  //      for n = [1:9]
+  //        if input(i,j) == 0 & n <> j
+  //          for m = [1:9]
+  //            if (sol(i,j,m) == 1 & sol(i,n,m) == 1) then sol(i,j,m) = 0; end
+  //          end
+  //        end
+  //      end
 
-      end
-    end
-  end
+  //      for n = [1:9]
+  //        if input(i,j) == 0 & n <> i
+  //          for m = [1:9]
+  //            if (sol(i,j,m) == 1 & sol(n,j,m) == 1) then sol(i,j,m) = 0; end
+  //          end
+  //        end
+  //      end
+
+  //    end
+  //  end
+  //end
 
   // ignore any <0 cells
   for i = [1:9]
