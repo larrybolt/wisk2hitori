@@ -9,3 +9,10 @@ function [res]=isInList(needle,haystack)
 		end
 	end
 endfunction
+
+function [res]=listToString(l)
+	res=""
+	for i=l
+		res=res+" "+string(i)
+	end
+endfunction
