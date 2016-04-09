@@ -1,5 +1,6 @@
 mode(-1);
 warning('off');
+
 z=0
 w=1
 leeg=-1
