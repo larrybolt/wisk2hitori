@@ -1,4 +1,4 @@
 all:
 	time scilab-cli -f test.sce -nwni
 github:
-	scilab-cli -f test.sce -nwni
+	scilab-cli -f test.sce -nwni -nouserstartup
