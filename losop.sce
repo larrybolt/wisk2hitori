@@ -59,11 +59,13 @@ function [output]=losOp(input)
 	
 	for row = [1:size]
 		for col = [1:size]
+
 		end
 	end
 	// columns
 	for col = [1:size]
 		for row = [2:size-1]
+
 		end
 	end
 endfunction
