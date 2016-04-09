@@ -37,4 +37,33 @@ function [output]=losOp(input)
 			end
 		end
 	end
+	// technique 2 // square between a pair
+	// rows
+	for row = [1:size]
+		for col = [2:size-1]
+			if input(row,col-1) <> input(row,col) & input(row,col-1) == input(row,col+1)
+				output(row,col)=w
+			end
+		end
+	end
+	// columns
+	for col = [1:size]
+		for row = [2:size-1]
+			if input(row-1,col) <> input(row,col) & input(row-1,col) == input(row+1,col)
+				output(row,col)=w
+			end
+		end
+	end
+	// technique 3 // pair induction
+	// rows
+	
+	for row = [1:size]
+		for col = [1:size]
+		end
+	end
+	// columns
+	for col = [1:size]
+		for row = [2:size-1]
+		end
+	end
 endfunction
