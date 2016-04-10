@@ -57,6 +57,7 @@ assert_checkequal(%t,isInList([4,4], z))
 assert_checkequal(%t,isInList([4,3], w))
 assert_checkequal(%t,isInList([3,4], w))
 
+
 //  input(r,c)
 //    r: 1 2 3 4     c
 input = [3 1 2 1  // 1
