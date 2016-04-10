@@ -20,6 +20,7 @@ function [output]=losOp(input)
     end
   end
 
+  // techniques only requiring a list of numbers
   // http://www.conceptispuzzles.com/index.aspx?uri=puzzle/hitori/techniques
   // technique 1 // search for adjecent triplets
   if %t
@@ -65,7 +66,6 @@ function [output]=losOp(input)
       end
     end
   end
-
   // technique 3 // pair induction
   if %t
     // rows
@@ -87,8 +87,17 @@ function [output]=losOp(input)
       end
     end
   end
+
+  // techniques requiring the whole grid
+  certainlyWhite = unshadingAroundShaded(output)
+  for i = certainlyWhite
+    output(i(1), i(2))=wit
+  end
+
 endfunction
 
+// techniques only requiring a list of numbers
+// http://www.conceptispuzzles.com/index.aspx?uri=puzzle/hitori/techniques
 // technique 1 // search for adjecent triplets
 function [certainlyBlack,certainlyWhite]=adjecentTriplets(input)
   certainlyBlack = list()
@@ -149,6 +158,23 @@ function [certainlyBlack]=pairInducation(listInput)
     if length(notAlone)>1 == %t
       for i = alone
         certainlyBlack($+1)=i
+      end
+    end
+  end
+endfunction
+
+// techniques requiring the whole grid
+// second rule of hitori, unshading around shaded square
+function [certainlyWhite]=unshadingAroundShaded(input)
+  certainlyWhite = list()
+  z = sqrt(length(input))
+  for row = [1:z]
+    for col = [1:z]
+      if input(row,col) == zwart
+        if row > 1 then certainlyWhite($+1) = [row-1,col]; end
+        if row < z then certainlyWhite($+1) = [row+1,col]; end
+        if col > 1 then certainlyWhite($+1) = [row,col-1]; end
+        if col < z then certainlyWhite($+1) = [row,col+1]; end
       end
     end
   end
