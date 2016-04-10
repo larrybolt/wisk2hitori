@@ -107,12 +107,23 @@ function [output]=losOp(input)
       output(i(1), i(2))=wit
     end
   end
-
+  // concer technique 2
+  if %t
+    [certainlyBlack,certainlyWhite] = cornerTechnique2(input)
+    for i = certainlyBlack
+      output(i(1), i(2))=zwart
+    end
+    for i = certainlyWhite
+      output(i(1), i(2))=wit
+    end
+  end
 endfunction
 
 // techniques only requiring a list of numbers
 // http://www.conceptispuzzles.com/index.aspx?uri=puzzle/hitori/techniques
 // technique 1 // search for adjecent triplets
+// x 5 5 5 x x
+//   z w z
 function [certainlyBlack,certainlyWhite]=adjecentTriplets(input)
   certainlyBlack = list()
   certainlyWhite = list()
@@ -125,6 +136,8 @@ function [certainlyBlack,certainlyWhite]=adjecentTriplets(input)
   end
 endfunction
 // technique 2 // square between a pair
+// x x 2 4 2 x
+//       w
 function [certainlyWhite]=squareBetweenPair(input)
   certainlyWhite = list()
   for i = [2:length(input)-1]
@@ -179,6 +192,10 @@ endfunction
 
 // techniques requiring the whole grid
 // second rule of hitori, unshading around shaded square
+// . . . .    . . . .
+// . . . .    . . w .
+// . . z . -> . w z w
+// . . . .    . . w .
 function [certainlyWhite]=unshadingAroundShaded(input)
   certainlyWhite = list()
   z = sqrt(length(input))
@@ -195,28 +212,72 @@ function [certainlyWhite]=unshadingAroundShaded(input)
 endfunction
 
 // concer technique 1
+// 3 3 .     z w .  analogue for other corners
+// 3 . . --> w . .
+// . . .     . . .
 function [certainlyBlack,certainlyWhite]=cornersHaveSameNumber(input)
   certainlyWhite = list()
   certainlyBlack = list()
   z = sqrt(length(input))
-  if input(1,1) == input(1,2) & input(1,1) == input(2,1)
+  if input(1,1) == input(1,2) & input(1,1) == input(2,1) // left upper
     certainlyBlack($+1) = [1,1]
     certainlyWhite($+1) = [1,2]
     certainlyWhite($+1) = [2,1]
   end
-  if input(z,z) == input(z,z-1) & input(z,z) == input(z-1,z)
+  if input(z,z) == input(z,z-1) & input(z,z) == input(z-1,z) // right lower
     certainlyBlack($+1) = [z,z]
     certainlyWhite($+1) = [z,z-1]
     certainlyWhite($+1) = [z-1,z]
   end
-  if input(1,z) == input(1,z-1) & input(1,z) == input(2,z)
+  if input(1,z) == input(1,z-1) & input(1,z) == input(2,z) // right upper
     certainlyBlack($+1) = [1,z]
     certainlyWhite($+1) = [1,z-1]
     certainlyWhite($+1) = [2,z]
   end
-  if input(z,1) == input(z-1,1) & input(z,1) == input(z,2)
+  if input(z,1) == input(z-1,1) & input(z,1) == input(z,2) // left lower
     certainlyBlack($+1) = [z,1]
     certainlyWhite($+1) = [z-1,1]
     certainlyWhite($+1) = [z,2]
+  end
+endfunction
+
+// corner technique 2
+  // 3 1 . . .    z w . . . // top left vertical
+  // 3 1 . . .    w z . . .
+  // . . . . . -> . . . . .
+  // 4 4 . 5 5    w z . ? ? <- // TODO: what do we do with these?
+  // 2 2 . 5 5    z w . ? ? // lower left horizontal
+  // 8 cases; upper/lower,left/right,vertical/horizontal
+function [certainlyBlack,certainlyWhite]=cornerTechnique2(input)
+  z = sqrt(length(input))
+  certainlyWhite = list()
+  certainlyBlack = list()
+  if (input(1,1) == input(2,1) & input(1,2) == input(2,2)) | (input(1,1) == input(1,2) & input(2,1) == input(2,2))
+      // upper left ver                                       // upper left hor
+    certainlyBlack($+1) = [1,1]
+    certainlyBlack($+1) = [2,2]
+    certainlyWhite($+1) = [2,1]
+    certainlyWhite($+1) = [1,2]
+  end
+  if (input(1,z-1) == input(2,z-1) & input(1,z) == input(2,z)) | (input(1,z-1) == input(1,z) & input(2,z-1) == input(2,z))
+      // upper right ver                                          // upper right hor
+    certainlyBlack($+1) = [1,z]
+    certainlyBlack($+1) = [2,z-1]
+    certainlyWhite($+1) = [1,z-1]
+    certainlyWhite($+1) = [2,z]
+  end
+  if (input(z-1,1) == input(z,1) & input(z-1,2) == input(z,2)) | (input(z-1,1) == input(z-1,2) & input(z,1) == input(z,2))
+      // lower left ver                                           // lower left hor
+    certainlyBlack($+1) = [z,1]
+    certainlyBlack($+1) = [z-1,2]
+    certainlyWhite($+1) = [z-1,1]
+    certainlyWhite($+1) = [z,2]
+  end
+  if (input(z-1,z-1) == input(z,z-1) & input(z-1,z) == input(z,z)) | (input(z-1,z-1) == input(z-1,z) & input(z,z-1) == input(z,z))
+      // lower left ver                                               // lower left hor
+    certainlyBlack($+1) = [z,z]
+    certainlyBlack($+1) = [z-1,z-1]
+    certainlyWhite($+1) = [z-1,z]
+    certainlyWhite($+1) = [z,z-1]
   end
 endfunction
