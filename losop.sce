@@ -10,73 +10,107 @@ leeg=-1
 function [output]=losOp(input)
   // define size (4 rows, 4 cols => z=4)
   // naming this variable size is a bad idea
-  z=sqrt(length(input))
-  output=zeros(z)
-  for i = [1:z]
-    for j = [1:z]
-      output(i,j)=leeg
+  if %t
+    z=sqrt(length(input))
+    output=zeros(z)
+    for i = [1:z]
+      for j = [1:z]
+        output(i,j)=leeg
+      end
     end
   end
 
   // http://www.conceptispuzzles.com/index.aspx?uri=puzzle/hitori/techniques
   // technique 1 // search for adjecent triplets
-  // rows
-  for row = [1:z]
-    for col = [2:z-1]
-      if input(row,col-1) == input(row,col) & input(row,col) == input(row,col+1)
-        output(row,col)=wit
-        output(row,col-1)=zwart
-        output(row,col+1)=zwart
+  if %t
+    // rows
+    for row = [1:z]
+      currentRow = input(row,:)
+      [certainlyBlack,certainlyWhite]=adjecentTriplets(currentRow)
+      for i=certainlyBlack
+        output(row,i)=zwart
+      end
+      for i=certainlyWhite
+        output(row,i)=wit
       end
     end
-  end
-  // columns
-  for col = [1:z]
-    for row = [2:z-1]
-      if input(row-1,col) == input(row,col) & input(row,col) == input(row+1,col)
-        output(row,col)=wit
-        output(row-1,col)=zwart
-        output(row+1,col)=zwart
+    // columns
+    for col = [1:z]
+      currentCol = input(:,col)
+      [certainlyBlack,certainlyWhite]=adjecentTriplets(currentCol)
+      for i=certainlyBlack
+        output(i,col)=zwart
+      end
+      for i=certainlyWhite
+        output(i,col)=wit
       end
     end
   end
   // technique 2 // square between a pair
-  // rows
-  for row = [1:z]
-    for col = [2:z-1]
-      if input(row,col-1) <> input(row,col) & input(row,col-1) == input(row,col+1)
-        output(row,col)=wit
+  if %t
+    // rows
+    for row = [1:z]
+      currentRow = input(row,:)
+      [certainlyWhite]=squareBetweenPair(currentRow)
+      for i=certainlyWhite
+        output(row,i)=wit
+      end
+    end
+    // columns
+    for col = [1:z]
+      currentCol = input(:,col)
+      [certainlyWhite]=squareBetweenPair(currentCol)
+      for i=certainlyWhite
+        output(i,col)=wit
       end
     end
   end
-  // columns
-  for col = [1:z]
-    for row = [2:z-1]
-      if input(row-1,col) <> input(row,col) & input(row-1,col) == input(row+1,col)
-        output(row,col)=wit
-      end
-    end
-  end
+
   // technique 3 // pair induction
-  // rows
-  for row = [1:z]
-    // current row we're scanning
-    currentRow = input(row,:)
-    [certainlyBlack]=pairInducation(currentRow)
-    for i=certainlyBlack
-      output(row,i)=zwart
+  if %t
+    // rows
+    for row = [1:z]
+      // current row we're scanning
+      currentRow = input(row,:)
+      [certainlyBlack]=pairInducation(currentRow)
+      for i=certainlyBlack
+        output(row,i)=zwart
+      end
     end
-  end
-  // columns
-  for col = [1:z]
-    // current column we're scanning
-    currentCol = input(:,col)
-    [certainlyBlack]=pairInducation(currentCol)
-    for i=certainlyBlack
-      output(i,col)=zwart
+    // columns
+    for col = [1:z]
+      // current column we're scanning
+      currentCol = input(:,col)
+      [certainlyBlack]=pairInducation(currentCol)
+      for i=certainlyBlack
+        output(i,col)=zwart
+      end
     end
   end
 endfunction
+
+// technique 1 // search for adjecent triplets
+function [certainlyBlack,certainlyWhite]=adjecentTriplets(input)
+  certainlyBlack = list()
+  certainlyWhite = list()
+  for i = [2:length(input)-1]
+    if input(i-1) == input(i) & input(i) == input(i+1)
+      certainlyBlack($+1) = i-1
+      certainlyWhite($+1) = i
+      certainlyBlack($+1) = i+1
+    end
+  end
+endfunction
+// technique 2 // square between a pair
+function [certainlyWhite]=squareBetweenPair(input)
+  certainlyWhite = list()
+  for i = [2:length(input)-1]
+    if input(i-1) <> input(i) & input(i-1) == input(i+1)
+      certainlyWhite($+1) = i
+    end
+  end
+endfunction
+// technique 3 // pair induction
 function [certainlyBlack]=pairInducation(listInput)
   // take the unique numbers
   certainlyBlack = list()
