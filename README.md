@@ -9,6 +9,7 @@ This allows for easier writing of tests, and test driven development.
 It may seem as it's slower to write the code this way, however the overhead
 created is neglectible.
 
+## Techniques
 The first set of techniques is based on:
 [http://www.conceptispuzzles.com/index.aspx?uri=puzzle/hitori/techniques](http://www.conceptispuzzles.com/index.aspx?uri=puzzle/hitori/techniques)
 
@@ -25,18 +26,16 @@ Lastely there are more advanced techniques which I'm not sure yet how to impleme
 the #color techniques can be ran multiple times afterwards, based on previous
 color-techniques that were applied.
 
-Current status:
+## Current status:
 
-*done*
+**done**
 * 1 Searching for adjacent triplets #num
 * 2 Square between a pair #num
 * 3 Pair induction #num
 * 5 Un-shading around shaded squares #color
 * 7 Corner technique 1 #num
 
-*todo*
-* 4 Shading squares in rows and columns (is eigenlijk 1 avn basic techniques) #color
+**todo**
+* 4 Shading squares in rows and columns (is eigenlijk nr.1 van basic techniques) #color
 * 6 Un-shading squares to avoid partitions #color
 * 8 corder technique 2 #num
-
-
