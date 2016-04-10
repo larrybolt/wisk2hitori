@@ -225,5 +225,4 @@ endfunction
 function [certainlyBlack,certainlyWhite]=cornerTechnique2(input)
   certainlyWhite = list()
   certainlyBlack = list()
-
 endfunction
