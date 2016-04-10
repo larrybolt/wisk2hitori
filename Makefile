@@ -1,9 +1,7 @@
 all:
 	scilab-cli -f test.sce -nwni
 github:
-	scilab-cli -f test.sce -nwni -nouserstartup
+	scilab-cli -f run.sce -nwni -nouserstartup
 test:
-	scilab-cli -f tests.sce -nwni -nouserstartup
-testone:
-	scilab-cli -f testone.sce
+	scilab-cli -f test.sce -nwni -nouserstartup
 
