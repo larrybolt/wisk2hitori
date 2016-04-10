@@ -195,26 +195,29 @@ function [certainlyWhite]=unshadingAroundShaded(input)
 endfunction
 
 // concer technique 1
+// 3 3 x     z w x  analogue for other corners
+// 3 x x --> w x x
+// x x x     x x x
 function [certainlyBlack,certainlyWhite]=cornersHaveSameNumber(input)
   certainlyWhite = list()
   certainlyBlack = list()
   z = sqrt(length(input))
-  if input(1,1) == input(1,2) & input(1,1) == input(2,1)
+  if input(1,1) == input(1,2) & input(1,1) == input(2,1) // left upper
     certainlyBlack($+1) = [1,1]
     certainlyWhite($+1) = [1,2]
     certainlyWhite($+1) = [2,1]
   end
-  if input(z,z) == input(z,z-1) & input(z,z) == input(z-1,z)
+  if input(z,z) == input(z,z-1) & input(z,z) == input(z-1,z) // right lower
     certainlyBlack($+1) = [z,z]
     certainlyWhite($+1) = [z,z-1]
     certainlyWhite($+1) = [z-1,z]
   end
-  if input(1,z) == input(1,z-1) & input(1,z) == input(2,z)
+  if input(1,z) == input(1,z-1) & input(1,z) == input(2,z) // right upper
     certainlyBlack($+1) = [1,z]
     certainlyWhite($+1) = [1,z-1]
     certainlyWhite($+1) = [2,z]
   end
-  if input(z,1) == input(z-1,1) & input(z,1) == input(z,2)
+  if input(z,1) == input(z-1,1) & input(z,1) == input(z,2) // left lower
     certainlyBlack($+1) = [z,1]
     certainlyWhite($+1) = [z-1,1]
     certainlyWhite($+1) = [z,2]
