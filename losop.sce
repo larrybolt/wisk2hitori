@@ -107,12 +107,13 @@ function [output]=losOp(input)
       output(i(1), i(2))=wit
     end
   end
-
 endfunction
 
 // techniques only requiring a list of numbers
 // http://www.conceptispuzzles.com/index.aspx?uri=puzzle/hitori/techniques
 // technique 1 // search for adjecent triplets
+// x 5 5 5 x x
+//   z w z
 function [certainlyBlack,certainlyWhite]=adjecentTriplets(input)
   certainlyBlack = list()
   certainlyWhite = list()
@@ -125,6 +126,8 @@ function [certainlyBlack,certainlyWhite]=adjecentTriplets(input)
   end
 endfunction
 // technique 2 // square between a pair
+// x x 2 4 2 x
+//       w
 function [certainlyWhite]=squareBetweenPair(input)
   certainlyWhite = list()
   for i = [2:length(input)-1]
@@ -179,6 +182,10 @@ endfunction
 
 // techniques requiring the whole grid
 // second rule of hitori, unshading around shaded square
+// . . . .    . . . .
+// . . . .    . . w .
+// . . z . -> . w z w
+// . . . .    . . w .
 function [certainlyWhite]=unshadingAroundShaded(input)
   certainlyWhite = list()
   z = sqrt(length(input))
@@ -195,9 +202,9 @@ function [certainlyWhite]=unshadingAroundShaded(input)
 endfunction
 
 // concer technique 1
-// 3 3 x     z w x  analogue for other corners
-// 3 x x --> w x x
-// x x x     x x x
+// 3 3 .     z w .  analogue for other corners
+// 3 . . --> w . .
+// . . .     . . .
 function [certainlyBlack,certainlyWhite]=cornersHaveSameNumber(input)
   certainlyWhite = list()
   certainlyBlack = list()
