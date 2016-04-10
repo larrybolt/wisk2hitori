@@ -37,4 +37,24 @@ assert_checkequal(%t,isInList([2,4], w))
 assert_checkequal(%t,isInList([3,3], w))
 assert_checkequal(%t,isInList([4,2], w))
 
+
+//  input(r,c)
+//    r: 1 2 3 4     c
+input = [3 3 2 1  // 1
+         3 1 2 1  // 2
+         2 7 8 9  // 3
+         1 4 5 6] // 4
+[z,w]=cornersHaveSameNumber(input);
+assert_checkequal(%t,isInList([1,1], z))
+assert_checkequal(%t,isInList([1,2], w))
+assert_checkequal(%t,isInList([2,1], w))
+input = [1 3 2 1
+         3 1 2 1
+         2 7 8 1
+         1 4 1 1]
+[z,w]=cornersHaveSameNumber(input);
+assert_checkequal(%t,isInList([4,4], z))
+assert_checkequal(%t,isInList([4,3], w))
+assert_checkequal(%t,isInList([3,4], w))
+
 quit

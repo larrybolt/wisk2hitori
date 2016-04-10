@@ -89,9 +89,23 @@ function [output]=losOp(input)
   end
 
   // techniques requiring the whole grid
-  certainlyWhite = unshadingAroundShaded(output)
-  for i = certainlyWhite
-    output(i(1), i(2))=wit
+  // second rule of hitori, unshading around shaded square
+  if %t
+    certainlyWhite = unshadingAroundShaded(output)
+    for i = certainlyWhite
+      output(i(1), i(2))=wit
+    end
+  end
+
+  // concer technique 1
+  if %t
+    [certainlyBlack,certainlyWhite] = cornersHaveSameNumber(input)
+    for i = certainlyBlack
+      output(i(1), i(2))=zwart
+    end
+    for i = certainlyWhite
+      output(i(1), i(2))=wit
+    end
   end
 
 endfunction
@@ -177,5 +191,32 @@ function [certainlyWhite]=unshadingAroundShaded(input)
         if col < z then certainlyWhite($+1) = [row,col+1]; end
       end
     end
+  end
+endfunction
+
+// concer technique 1
+function [certainlyBlack,certainlyWhite]=cornersHaveSameNumber(input)
+  certainlyWhite = list()
+  certainlyBlack = list()
+  z = sqrt(length(input))
+  if input(1,1) == input(1,2) & input(1,1) == input(2,1)
+    certainlyBlack($+1) = [1,1]
+    certainlyWhite($+1) = [1,2]
+    certainlyWhite($+1) = [2,1]
+  end
+  if input(z,z) == input(z,z-1) & input(z,z) == input(z-1,z)
+    certainlyBlack($+1) = [z,z]
+    certainlyWhite($+1) = [z,z-1]
+    certainlyWhite($+1) = [z-1,z]
+  end
+  if input(1,z) == input(1,z-1) & input(1,z) == input(2,z)
+    certainlyBlack($+1) = [1,z]
+    certainlyWhite($+1) = [1,z-1]
+    certainlyWhite($+1) = [2,z]
+  end
+  if input(z,1) == input(z-1,1) & input(z,1) == input(z,2)
+    certainlyBlack($+1) = [z,1]
+    certainlyWhite($+1) = [z-1,1]
+    certainlyWhite($+1) = [z,2]
   end
 endfunction
