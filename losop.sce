@@ -220,3 +220,10 @@ function [certainlyBlack,certainlyWhite]=cornersHaveSameNumber(input)
     certainlyWhite($+1) = [z,2]
   end
 endfunction
+
+// corner technique 2
+function [certainlyBlack,certainlyWhite]=cornerTechnique2(input)
+  certainlyWhite = list()
+  certainlyBlack = list()
+
+endfunction

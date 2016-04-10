@@ -57,4 +57,33 @@ assert_checkequal(%t,isInList([4,4], z))
 assert_checkequal(%t,isInList([4,3], w))
 assert_checkequal(%t,isInList([3,4], w))
 
+//  input(r,c)
+//    r: 1 2 3 4     c
+input = [3 1 2 1  // 1
+         3 1 2 1  // 2
+         2 7 8 8  // 3
+         1 4 1 1] // 4
+[z,w]=cornerTechnique2(input);
+assert_checkequal(%t,isInList([1,1], z)) // upper left
+assert_checkequal(%t,isInList([2,2], z))
+assert_checkequal(%t,isInList([1,2], w))
+assert_checkequal(%t,isInList([2,1], w))
+assert_checkequal(%t,isInList([4,4], z)) // lower right
+assert_checkequal(%t,isInList([3,3], z))
+assert_checkequal(%t,isInList([4,3], w))
+assert_checkequal(%t,isInList([3,4], w))
+input = [1 2 3 3
+         4 1 2 2
+         2 7 9 8
+         2 7 2 1]
+[z,w]=cornerTechnique2(input);
+assert_checkequal(%t,isInList([1,4], z)) // upper right
+assert_checkequal(%t,isInList([2,3], z))
+assert_checkequal(%t,isInList([1,3], w))
+assert_checkequal(%t,isInList([2,4], w))
+assert_checkequal(%t,isInList([4,1], z)) // lower left
+assert_checkequal(%t,isInList([3,2], z))
+assert_checkequal(%t,isInList([3,1], w))
+assert_checkequal(%t,isInList([4,2], w))
+
 quit
