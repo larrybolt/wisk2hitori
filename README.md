@@ -1,4 +1,6 @@
 # Hitori solving using scilab
+[![Example of a hitori](http://www.conceptispuzzles.com/picture/27/1219.gif)](http://www.conceptispuzzles.com/index.aspx?uri=puzzle/hitori/techniques)
+[![Example of a solved hitori](http://www.conceptispuzzles.com/picture/27/1220.gif)](http://www.conceptispuzzles.com/index.aspx?uri=puzzle/hitori/techniques)
 
 ## Code style
 Code is written modular, so every technique is contained in a funciton.
