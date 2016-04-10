@@ -40,3 +40,5 @@ color-techniques that were applied.
 * 4 Shading squares in rows and columns (is eigenlijk nr.1 van basic techniques) #color
 * 6 Un-shading squares to avoid partitions #color
 * 8 corder technique 2 #num
+
+[http://www.menneske.no/hitori/methods/eng/methodcnc.html](other source with techniques)
