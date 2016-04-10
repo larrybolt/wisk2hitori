@@ -1,3 +1,4 @@
+[http://www.conceptispuzzles.com/index.aspx?uri=puzzle/hitori/techniques](http://www.conceptispuzzles.com/index.aspx?uri=puzzle/hitori/techniques)
 ## done
 * 1 Searching for adjacent triplets
 * 2 Square between a pair
