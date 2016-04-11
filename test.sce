@@ -87,4 +87,13 @@ assert_checkequal(%t,isInList([3,2], z))
 assert_checkequal(%t,isInList([3,1], w))
 assert_checkequal(%t,isInList([4,2], w))
 
+z=0; w=1; l=-1
+i = [1 2 3 4 3 5 2 1]
+j = [l l w l l z w l]
+//     ^     ^       those should be black
+//   1 2 3 4 5 6 7 8
+[z]=whiteColoredMeansOtherBlack(i,j)
+assert_checkequal(%t,isInList(2,z))
+assert_checkequal(%t,isInList(5,z))
+
 quit

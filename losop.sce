@@ -281,3 +281,22 @@ function [certainlyBlack,certainlyWhite]=cornerTechnique2(input)
     certainlyWhite($+1) = [z,z-1]
   end
 endfunction
+
+
+// [1 2 3 4 3 5 2 1]
+// [l l w l l z w l]
+//    ^     ^       those should be black
+//  1 2 3 4 5 6 7 8
+function [certainlyBlack]=whiteColoredMeansOtherBlack(inputRow,inputColors)
+  certainlyBlack = list()
+  z = length(inputRow)
+  for i = find(inputColors == wit)       // find all white locations
+    num = inputRow(i)                    // find what numbers on that location
+    otherPlaces = find(inputRow == num)  // find other places with that number
+    if length(otherPlaces) == 1 then continue; end // if there's just one, skip
+    for j = otherPlaces
+      if j == i then continue; end
+      certainlyBlack($+1) = j
+    end
+  end
+endfunction
