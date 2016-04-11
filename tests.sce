@@ -57,4 +57,23 @@ assert_checkequal(%t,isInList([4,4], z))
 assert_checkequal(%t,isInList([4,3], w))
 assert_checkequal(%t,isInList([3,4], w))
 
+
+z=0; w=1; l=-1
+input = [3 3 2 1
+         3 1 2 1
+         2 7 8 9 // the 2 has vertically & horizontaly no conflicts, thus white
+         1 4 8 6]
+//       l l l l  1
+//       l l l l  2
+//       w w l w  3
+//       w w l w  4
+//       1 2 3 4
+[w]=noConflictMeansW(input);
+assert_checkequal(%t,isInList([3,1], w))
+assert_checkequal(%t,isInList([3,2], w))
+assert_checkequal(%t,isInList([3,4], w))
+assert_checkequal(%t,isInList([4,1], w))
+assert_checkequal(%t,isInList([4,2], w))
+assert_checkequal(%t,isInList([4,4], w))
+
 quit
