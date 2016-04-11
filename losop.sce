@@ -117,6 +117,28 @@ function [output]=losOp(input)
       output(i(1), i(2))=wit
     end
   end
+
+  // whiteColoredMeansOtherBlack
+  if %t
+    // rows
+    for row = [1:z]
+      currentRow = input(row,:)
+      currentColors = output(row,:)
+      [certainlyBlack]=whiteColoredMeansOtherBlack(currentRow,currentColors)
+      for i=certainlyBlack
+        output(row,i)=zwart
+      end
+    end
+    // columns
+    for col = [1:z]
+      currentCol = input(:,col)
+      currentColors = output(:,col)
+      [certainlyBlack]=whiteColoredMeansOtherBlack(currentCol,currentColors)
+      for i=certainlyBlack
+        output(i,col)=zwart
+      end
+    end
+  end
 endfunction
 
 // techniques only requiring a list of numbers
