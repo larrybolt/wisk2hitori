@@ -139,6 +139,46 @@ function [output]=losOp(input)
       end
     end
   end
+
+  // TODO: This should be somehow refactored
+  changes = 1
+  //while changes>0
+  for i = [1:8]
+    //disp("changes="+string(changes))
+    if changes == 0 then break; end // WTF? this is not working, changes keep being > 0
+    changes = 0
+    //disp("changes "+string(changes))
+    if %t
+      certainlyWhite = unshadingAroundShaded(output)
+      changes = changes + length(certainlyWhite)
+      for i = certainlyWhite
+        output(i(1), i(2))=wit
+      end
+    end
+    if %t
+      // rows
+      for row = [1:z]
+        currentRow = input(row,:)
+        currentColors = output(row,:)
+        [certainlyBlack]=whiteColoredMeansOtherBlack(currentRow,currentColors)
+        changes = changes + length(certainlyBlack)
+        for i=certainlyBlack
+          output(row,i)=zwart
+        end
+      end
+      // columns
+      for col = [1:z]
+        currentCol = input(:,col)
+        currentColors = output(:,col)
+        [certainlyBlack]=whiteColoredMeansOtherBlack(currentCol,currentColors)
+        changes = changes + length(certainlyBlack)
+        for i=certainlyBlack
+          output(i,col)=zwart
+        end
+      end
+    end
+  end
+
 endfunction
 
 // techniques only requiring a list of numbers
@@ -303,7 +343,6 @@ function [certainlyBlack,certainlyWhite]=cornerTechnique2(input)
     certainlyWhite($+1) = [z,z-1]
   end
 endfunction
-
 
 // [1 2 3 4 3 5 2 1]
 // [l l w l l z w l]
