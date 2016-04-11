@@ -88,6 +88,14 @@ function [output]=losOp(input)
     end
   end
 
+  // noConflictMeansWhite
+  if %t
+    certainlyWhite = noConflictMeansW(input)
+    for i = certainlyWhite
+      output(i(1), i(2))=wit
+    end
+  end
+
   // techniques requiring the whole grid
   // second rule of hitori, unshading around shaded square
   if %t
@@ -358,6 +366,22 @@ function [certainlyBlack]=whiteColoredMeansOtherBlack(inputRow,inputColors)
     for j = otherPlaces
       if j == i then continue; end
       certainlyBlack($+1) = j
+    end
+  end
+endfunction
+
+// if a number is unique horizontally and verticaly, it must be white
+function [certainlyWhite]=noConflictMeansW(input)
+  certainlyWhite = list()
+  z = sqrt(length(input))
+  for i = [1:z]
+    for j = [1:z]
+      row = input(i,:)
+      col = input(:,j)
+      num = input(i,j)
+      if length(find(row == num)) == 1 & length(find(col == num)) == 1
+        certainlyWhite($+1) = [i,j]
+      end
     end
   end
 endfunction
