@@ -215,5 +215,12 @@ Caw = [0    1    1    0    1
        1    1    1    1    1]
 assert_checkequal(Caw,colorUnknownWhite(COk))
 assert_checkequal(%t,isContinuousWhite(colorUnknownWhite(COk)))
+// how it should be after the function
+Csol = [0    1    1    0    1
+        1    1    0    1    1
+        0    1    1    0    1
+        1    0    1    1    1
+        1    1    1   -1    1]
+assert_checkequal(Csol,whiteBecauseContinuous(COk))
 
 quit
