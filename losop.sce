@@ -423,11 +423,11 @@ function loc = multipleNumbBlack(A, C)
 endfunction
 // check for a row whether a number only appears once unshaded
 function isOk = firstRuleForRow(Nrow,Crow)
-	isOk=%t
-	numbersNeedChecking = unique(Nrow)
-	for num = numbersNeedChecking
-		locationsOfNumber = find(Nrow == num)
-		if length(locationsOfNumber) > 1
+  isOk=%t
+  numbersNeedChecking = unique(Nrow)
+  for num = numbersNeedChecking
+    locationsOfNumber = find(Nrow == num)
+    if length(locationsOfNumber) > 1
       isMarkedWhiteFound = %f
       for numloc = locationsOfNumber
         if Crow(numloc) == wit & isMarkedWhiteFound
@@ -439,7 +439,7 @@ function isOk = firstRuleForRow(Nrow,Crow)
         end
       end
     end
-	end
+  end
 endfunction
 
 
