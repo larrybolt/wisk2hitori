@@ -407,21 +407,39 @@ endfunction
 function loc = multipleNumbBlack(A, C)
     loc=%t
     for i = 1:size(A, "r")
-        row = A(i,:)
-        Crow = C(i,:)
-         //iterate over the row and check if given number is equal to the iterated number
-        for nummer=1:size(row, "c")
-            for j=1:size(row,"c")
-                if row(j) == row(nummer)  & j ~= nummer then
-                     disp(row)
-                    // if the locations aren't equal check if one of them is black
-                    if Crow(j) == w & Crow(nummer) == w then
-                        loc = %f
-                    end
-                end
-            end
-        end
+      Arow = A(i,:)
+      Crow = C(i,:)
+      if firstRuleForRow(Arow,Crow) = %f
+        loc=%f
+        return
+      end
+      Acol = A(:,i)
+      Ccol = C(:,i)
+      if firstRuleForRow(Acol,Ccol) = %f
+        loc=%f
+        return
+      end
     end
+endfunction
+// check for a row whether a number only appears once unshaded
+function isOk = firstRuleForRow(Nrow,Crow)
+	isOk=%t
+	numbersNeedChecking = unique(Nrow)
+	for num = numbersNeedChecking
+		locationsOfNumber = find(Nrow == num)
+		if length(locationsOfNumber) > 1
+      isMarkedWhiteFound = %f
+      for numloc = locationsOfNumber
+        if Crow(numloc) == wit & isMarkedWhiteFound
+          isOk=%f
+          return
+        end
+        if Crow(numloc) == wit
+          isMarkedWhiteFound = %t
+        end
+      end
+    end
+	end
 endfunction
 
 
@@ -574,3 +592,7 @@ function isContinuous=isContinuousWhite(C)
   isContinuous = resultaat
 endfunction
 
+// check if the hitori solution is valid
+function isValid=isValidHitori(N, C)
+    isValid = isContinuousWhite(C) &  multipleNumbBlack(N, C) & multipleNumbBlack(N', C')
+endfunction
