@@ -20,6 +20,7 @@ function [output]=losOp(input)
     end
   end
 
+  /// only num
   // techniques only requiring a list of numbers
   // http://www.conceptispuzzles.com/index.aspx?uri=puzzle/hitori/techniques
   // technique 1 // search for adjecent triplets
@@ -96,15 +97,6 @@ function [output]=losOp(input)
     end
   end
 
-  // techniques requiring the whole grid
-  // second rule of hitori, unshading around shaded square
-  if %t
-    certainlyWhite = unshadingAroundShaded(output)
-    for i = certainlyWhite
-      output(i(1), i(2))=wit
-    end
-  end
-
   // concer technique 1
   if %t
     [certainlyBlack,certainlyWhite] = cornersHaveSameNumber(input)
@@ -125,6 +117,84 @@ function [output]=losOp(input)
       output(i(1), i(2))=wit
     end
   end
+
+  /// only shade
+  // techniques requiring the whole grid
+  // second rule of hitori, unshading around shaded square
+  if %t
+    certainlyWhite = unshadingAroundShaded(output)
+    for i = certainlyWhite
+      output(i(1), i(2))=wit
+    end
+  end
+
+  /// shade and color
+  // whiteColoredMeansOtherBlack
+  if %t
+    // rows
+    for row = [1:z]
+      currentRow = input(row,:)
+      currentColors = output(row,:)
+      [certainlyBlack]=whiteColoredMeansOtherBlack(currentRow,currentColors)
+      for i=certainlyBlack
+        output(row,i)=zwart
+      end
+    end
+    // columns
+    for col = [1:z]
+      currentCol = input(:,col)
+      currentColors = output(:,col)
+      [certainlyBlack]=whiteColoredMeansOtherBlack(currentCol,currentColors)
+      for i=certainlyBlack
+        output(i,col)=zwart
+      end
+    end
+  end
+
+  // TODO: This should be somehow refactored
+  watchdog = 20
+  changes = 99
+  oldunshadingamount = 0
+  oldwhitechanges = 0
+  while changes>0 & watchdog>0
+    changes = 0
+    watchdog = watchdog-1
+    if %t
+      certainlyWhite = unshadingAroundShaded(output)
+      unshadingamount = length(certainlyWhite)
+      changes = changes + (unshadingamount - oldunshadingamount)
+      oldunshadingamount = unshadingamount
+      for i = certainlyWhite
+        output(i(1), i(2))=wit
+      end
+    end
+    if %t
+      whitechanges = 0
+      // rows
+      for row = [1:z]
+        currentRow = input(row,:)
+        currentColors = output(row,:)
+        [certainlyBlack]=whiteColoredMeansOtherBlack(currentRow,currentColors)
+        whitechanges = whitechanges + length(certainlyBlack)
+        for i=certainlyBlack
+          output(row,i)=zwart
+        end
+      end
+      // columns
+      for col = [1:z]
+        currentCol = input(:,col)
+        currentColors = output(:,col)
+        [certainlyBlack]=whiteColoredMeansOtherBlack(currentCol,currentColors)
+        whitechanges = whitechanges + length(certainlyBlack)
+        for i=certainlyBlack
+          output(i,col)=zwart
+        end
+      end
+      changes = changes + (whitechanges - oldwhitechanges)
+      oldwhitechanges = whitechanges
+    end
+  end
+
 endfunction
 
 // techniques only requiring a list of numbers
@@ -287,6 +357,24 @@ function [certainlyBlack,certainlyWhite]=cornerTechnique2(input)
     certainlyBlack($+1) = [z-1,z-1]
     certainlyWhite($+1) = [z-1,z]
     certainlyWhite($+1) = [z,z-1]
+  end
+endfunction
+
+// [1 2 3 4 3 5 2 1]
+// [l l w l l z w l]
+//    ^     ^       those should be black
+//  1 2 3 4 5 6 7 8
+function [certainlyBlack]=whiteColoredMeansOtherBlack(inputRow,inputColors)
+  certainlyBlack = list()
+  z = length(inputRow)
+  for i = find(inputColors == wit)       // find all white locations
+    num = inputRow(i)                    // find what numbers on that location
+    otherPlaces = find(inputRow == num)  // find other places with that number
+    if length(otherPlaces) == 1 then continue; end // if there's just one, skip
+    for j = otherPlaces
+      if j == i then continue; end
+      certainlyBlack($+1) = j
+    end
   end
 endfunction
 
