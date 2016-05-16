@@ -19,5 +19,7 @@ C3=[z w w z w
     z w w z w
     w z w w w
     w w w z w]
-losOp(N3);
+R1=losOp(N3);
+disp(N3)
+disp(R1)
 quit

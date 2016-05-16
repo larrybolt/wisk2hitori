@@ -14,18 +14,19 @@ created is neglectible.
 The first set of techniques is based on:
 [http://www.conceptispuzzles.com/index.aspx?uri=puzzle/hitori/techniques](http://www.conceptispuzzles.com/index.aspx?uri=puzzle/hitori/techniques)
 
-There are two kinds of techniques:
+There are thee kinds of techniques:
 * techniques based on numbers, these should be ran first (#num)
-* techniques based on the color of other cells. (#color)
+* techniques based on the shading of cells. (#shading)
+* techniques based on numbers and shading
 
 Based on numbers can be done interchangebly, afterwards a portion of the cells
-will have a certain color, and the second kind of techniques will color even
+will have a certain shading, and the second kind of techniques will shading even
 more cells.
 
 Lastely there are more advanced techniques which I'm not sure yet how to implement.
 
-the #color techniques can be ran multiple times afterwards, based on previous
-color-techniques that were applied.
+the #shading techniques can be ran multiple times afterwards, based on previous
+shading-techniques that were applied.
 
 ## Current status:
 
@@ -33,12 +34,12 @@ color-techniques that were applied.
 * 1 Searching for adjacent triplets #num
 * 2 Square between a pair #num
 * 3 Pair induction #num
-* 5 Un-shading around shaded squares #color
 * 7 Corner technique 1 #num
+* 8 corder technique 2 #num
+* 5 Un-shading around shaded squares #shading
+* 4 Shading squares in rows and columns (is eigenlijk nr.1 van basic techniques) #shading
 
 **todo**
-* 4 Shading squares in rows and columns (is eigenlijk nr.1 van basic techniques) #color
-* 6 Un-shading squares to avoid partitions #color
-* 8 corder technique 2 #num
+* 6 Un-shading squares to avoid partitions #shading
 
 [http://www.menneske.no/hitori/methods/eng/methodcnc.html](other source with techniques)
