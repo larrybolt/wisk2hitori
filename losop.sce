@@ -305,3 +305,184 @@ function [certainlyWhite]=noConflictMeansW(input)
     end
   end
 endfunction
+
+
+// ISVALID part
+// Make a function that tests whether a solution for a hitori is a valid one, probably checking the rules:
+// 1. Each number must not be more than once in each row and column. If there are more, some must be marked as black.
+// 2. No black cell beside each other, only in diagonal
+// 3. The white cells must be continuos
+
+// 1
+// Each number must not be more than once in each row and column.
+//If there are more, some must be marked as black.
+function loc = multipleNumbBlack(A, C)
+    loc=%t
+    for i = 1:size(A, "r")
+        row = A(i,:)
+        Crow = C(i,:)
+         //iterate over the row and check if given number is equal to the iterated number
+        for nummer=1:size(row, "c")
+            for j=1:size(row,"c")
+                if row(j) == row(nummer)  & j ~= nummer then
+                     disp(row)
+                    // if the locations aren't equal check if one of them is black
+                    if Crow(j) == w & Crow(nummer) == w then
+                        loc = %f
+                    end
+                end
+            end
+        end
+    end
+endfunction
+
+
+// 3
+function isContinuous=isContinuousWhite(C)
+  //test to check if white cells get cut off
+  z=0
+  w=1
+  A=C
+  B=A
+  teller = 1
+  for i=1:size(A,"r")
+    for j=1:size(A,"r")
+      if A(i,j)==z then
+        A(i,j)=0
+      end
+      if A(i,j)==w then
+        A(i,j)=teller
+        teller = teller +1
+      end
+    end
+  end
+
+  while length(find(A~=B))>0
+    B=A
+    r=size(A,"r")
+
+    //check top left corner
+    if A(1,1)~=0 then
+      if A(1,2)>A(1,1) then
+        A(1,2)=A(1,1)
+      end
+      if A(2,1)>A(1,1) then
+        A(2,1)=A(1,1)
+      end
+    end
+    //check top right corner
+    if A(1,r) ~= 0 then
+      if A(1,r-1) > A(1,r) then
+        A(1,r-1) = A(1,r)
+      end
+      if A(2,r) > A(1,r) then
+        A(2,r) = A(1,r)
+      end
+    end
+    //check bottom left corner
+    if A(r,1)~=0 then
+      if A(r,2)>A(r,1) then
+        A(r,2)=A(r,1)
+      end
+      if A(r-1,1) >  A(r,1) then
+        A(r-1,1)= A(r,1)
+      end
+    end
+    //check bottom right corner
+    if A(r,r) ~= 0 then
+      if A(r-1,r)>A(r,r) then
+        A(r-1,r)=A(r,r)
+      end
+      if A(r,r-1)>A(r,r) then
+        A(r,r-1)=A(r,r)
+      end
+    end
+
+    //check sides
+    for i=2:r-1
+      //check left side
+      if A(1,i)~=0 then
+
+        if A(2,i)>A(1,i) then
+          A(2,i)=A(1,i)
+        end
+        if A(1,i-1)>A(1,i) then
+          A(1,i-1)=A(1,i)
+        end
+        if A(1,i+1)>A(1,i) then
+          A(1,i+1)=A(1,i)
+        end
+
+      end
+      //check right side
+      if A(r,i)~=0 then
+
+        if A(r-1,i)>A(r,i) then
+          A(r-1,i)=A(r,i)
+        end
+        if A(r,i-1)>A(r,i) then
+          A(r,i-1)=A(r,i)
+        end
+        if A(r,i+1)>A(r,i) then
+          A(r,i+1)=A(r,i)
+        end
+
+      end
+      //check top side
+      if A(i,1)~=0 then
+
+        if A(i,2) > A(i,1) then
+          A(i,2) = A(i,1)
+        end
+        if A(i-1,1)> A(i,1) then
+          A(i-1,1)= A(i,1)
+        end
+        if A(i+1,1)> A(i,1) then
+          A(i+1,1)= A(i,1)
+        end
+      end
+      //check bottom side
+      if A(i,r)~=0 then
+        if A(i,r-1) > A(i,r) then
+          A(i,r-1)=A(i,r)
+        end
+        if A(i-1,r)> A(i,r) then
+          A(i-1,r)=A(i,r)
+        end
+        if A(i+1,r)> A(i,r) then
+          A(i+1,r)=A(i,r)
+        end
+      end
+    end
+    //check body
+    for i=2:r-1
+      for j=2:r-1
+        if A(i,j)~=0 then
+          if A(i+1,j)>A(i,j) then
+            A(i+1,j)=A(i,j)
+          end
+          if A(i-1,j)>A(i,j) then
+            A(i-1,j)=A(i,j)
+          end
+          if A(i,j+1)>A(i,j) then
+            A(i,j+1)=A(i,j)
+          end
+          if A(i,j-1)>A(i,j) then
+            A(i,j-1)=A(i,j)
+          end
+        end
+      end
+     end
+    end
+
+  resultaat =%t
+  for i=1:r
+    for j=1:r
+      if A(i,j) ~= 0 &  A(i,j) ~=1 then
+      resultaat =%f
+      end
+    end
+  end
+  isContinuous = resultaat
+endfunction
+
