@@ -394,6 +394,31 @@ function [certainlyWhite]=noConflictMeansW(input)
   end
 endfunction
 
+// find black cells and check if they would kill continuous because of black
+function [certainlyWhite]=whiteBecauseContinuous(N,C)
+  certainlyWhite = list()
+  z = sqrt(length(input))
+  for i = [1:z]
+    row = C(i,:)
+    emptyPlaces = find(row == leeg)
+    if (length(emptyPlaces)>0)
+    end
+  end
+endfunction
+
+// we need to color all cells white that are unknown to check what a cell
+// change to black would do to continuousness
+function [output]=colorUnknownWhite(input)
+  output = input
+  z = sqrt(length(input))
+  for i = [1:z]
+    for j = [1:z]
+      if input(i,j) == leeg
+        output(i,j) = wit
+      end
+    end
+  end
+endfunction
 
 // ISVALID part
 // Make a function that tests whether a solution for a hitori is a valid one, probably checking the rules:
