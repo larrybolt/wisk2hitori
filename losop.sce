@@ -157,12 +157,8 @@ function [output]=losOp(input)
   oldunshadingamount = 0
   oldwhitechanges = 0
   while changes>0 & watchdog>0
-  //for i = [1:8]
-    //disp("changes="+string(changes))
-    //if changes == 0 then break; end // WTF? this is not working, changes keep being > 0
     changes = 0
     watchdog = watchdog-1
-    //disp("changes "+string(changes))
     if %t
       certainlyWhite = unshadingAroundShaded(output)
       unshadingamount = length(certainlyWhite)
