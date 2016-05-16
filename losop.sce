@@ -442,6 +442,32 @@ function isOk = firstRuleForRow(Nrow,Crow)
   end
 endfunction
 
+// 2
+// no two black cells can be next to eachother
+function isOk=checkNoBlackCellsNextToEachother(input)
+    isOk=%t
+    for i = 1:size(input, "r")
+      Crow = C(i,:)
+      if noBlackCellsNextToEachother(Crow) = %f
+        isOk=%f
+        return
+      end
+      Ccol = C(:,i)
+      if noBlackCellsNextToEachother(Ccol) = %f
+        isOk=%f
+        return
+      end
+    end
+endfunction
+function isOk=noBlackCellsNextToEachother(input)
+  isOk=%t
+  for i = [1:length(input)-1]
+    if input(i) == zwart & input(i+1) == zwart
+      isOk=%f
+      return
+    end
+  end
+endfunction
 
 // 3
 function isContinuous=isContinuousWhite(C)
@@ -594,5 +620,5 @@ endfunction
 
 // check if the hitori solution is valid
 function isValid=isValidHitori(N, C)
-    isValid = isContinuousWhite(C) &  multipleNumbBlack(N, C) & multipleNumbBlack(N', C')
+    isValid = isContinuousWhite(C) &  multipleNumbBlack(N, C) & multipleNumbBlack(N', C') & checkNoBlackCellsNextToEachother(C)
 endfunction

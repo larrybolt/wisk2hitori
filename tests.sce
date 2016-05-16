@@ -182,4 +182,24 @@ Cbad = [0    1    1    0    1
         1    0    1    1    1
         1    1    0    1    1]
 assert_checkequal(%f,isContinuousWhite(Cbad))
+
+// test 2nd rule of hitori
+z=0; w=1; l=-1
+assert_checkequal(%f,noBlackCellsNextToEachother([z w z z w w w z]))
+assert_checkequal(%t,noBlackCellsNextToEachother([z w z w w w w z]))
+
+// test multipleNumbBlack
+assert_checkequal(%t,isValidHitori(N1,C1))
+assert_checkequal(%t,isValidHitori(N2,C2))
+assert_checkequal(%t,isValidHitori(N3,C3))
+assert_checkequal(%t,isValidHitori(N4,C4))
+assert_checkequal(%t,isValidHitori(N5,C5))
+assert_checkequal(%t,isValidHitori(N6,C6))
+assert_checkequal(%t,isValidHitori(N7,C7))
+assert_checkequal(%t,isValidHitori(N8,C8))
+assert_checkequal(%t,isValidHitori(N9,C9))
+assert_checkequal(%t,isValidHitori(N10,C10))
+assert_checkequal(%t,isValidHitori(N11,C11))
+assert_checkequal(%t,isValidHitori(N12,C12))
+
 quit
