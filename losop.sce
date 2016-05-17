@@ -193,6 +193,9 @@ function [output]=losOp(input)
       changes = changes + (whitechanges - oldwhitechanges)
       oldwhitechanges = whitechanges
     end
+    oldOutput = output
+    output = whiteBecauseContinuous(output)
+    changes = changes + length(find(output == oldOutput == %f))
   end
 
 endfunction
@@ -395,13 +398,20 @@ function [certainlyWhite]=noConflictMeansW(input)
 endfunction
 
 // find black cells and check if they would kill continuous because of black
-function [certainlyWhite]=whiteBecauseContinuous(N,C)
-  certainlyWhite = list()
-  z = sqrt(length(input))
+function [CChanged]=whiteBecauseContinuous(C)
+  CChanged = C
+  z = sqrt(length(C))
   for i = [1:z]
     row = C(i,:)
     emptyPlaces = find(row == leeg)
     if (length(emptyPlaces)>0)
+      for emptyPlace = emptyPlaces
+        tmpC = C
+        tmpC(i,emptyPlace) = zwart
+        if isContinuousWhite(colorUnknownWhite(tmpC)) == %f
+          CChanged(i,emptyPlace) = wit
+        end
+      end
     end
   end
 endfunction
