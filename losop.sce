@@ -122,6 +122,7 @@ function [output]=losOp(input)
   output = gridTechniques(input,output)
 
   // now the guesswork starts
+  preGuessWork = output
   z = sqrt(length(output))
   for i = [1:z]
     row = output(i,:)
@@ -131,11 +132,21 @@ function [output]=losOp(input)
         tmpOutput = output
         tmpOutput(i,emptyPlace) = zwart
         tmpOutput = gridTechniques(input,tmpOutput)
-        if multipleNumbBlack(tmpOutput,input) & checkNoBlackCellsNextToEachother(tmpOutput) & isContinuousWhite(colorUnknownWhite(tmpOutput))
+        if multipleNumbBlack(input,tmpOutput) & checkNoBlackCellsNextToEachother(tmpOutput) & isContinuousWhite(colorUnknownWhite(tmpOutput))
           output = tmpOutput
         end
       end
     end
+  end
+  if length(find(output == leeg)) > 0
+    output = preGuessWork
+  end
+
+  if length(find(output == leeg))>0
+    disp("Sorry, maar deze puzzel kan ik nog niet oplossen")
+    return
+  else
+    return
   end
 
 endfunction
@@ -413,6 +424,7 @@ function [CChanged]=whiteBecauseContinuous(C)
   end
 endfunction
 
+/// HELPER FUNCTIONS
 // we need to color all cells white that are unknown to check what a cell
 // change to black would do to continuousness
 function [output]=colorUnknownWhite(input)
