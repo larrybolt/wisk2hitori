@@ -122,6 +122,7 @@ function [output]=losOp(input)
   output = gridTechniques(input,output)
 
   // now the guesswork starts
+  preGuessWork = output
   z = sqrt(length(output))
   for i = [1:z]
     row = output(i,:)
@@ -136,6 +137,9 @@ function [output]=losOp(input)
         end
       end
     end
+  end
+  if length(find(output == leeg)) > 0
+    output = preGuessWork
   end
 
 endfunction
@@ -413,6 +417,7 @@ function [CChanged]=whiteBecauseContinuous(C)
   end
 endfunction
 
+/// HELPER FUNCTIONS
 // we need to color all cells white that are unknown to check what a cell
 // change to black would do to continuousness
 function [output]=colorUnknownWhite(input)
