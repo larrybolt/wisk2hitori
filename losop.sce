@@ -118,39 +118,6 @@ function [output]=losOp(input)
     end
   end
 
-  /// only shade
-  // techniques requiring the whole grid
-  // second rule of hitori, unshading around shaded square
-  if %t
-    certainlyWhite = unshadingAroundShaded(output)
-    for i = certainlyWhite
-      output(i(1), i(2))=wit
-    end
-  end
-
-  /// shade and color
-  // whiteColoredMeansOtherBlack
-  if %t
-    // rows
-    for row = [1:z]
-      currentRow = input(row,:)
-      currentColors = output(row,:)
-      [certainlyBlack]=whiteColoredMeansOtherBlack(currentRow,currentColors)
-      for i=certainlyBlack
-        output(row,i)=zwart
-      end
-    end
-    // columns
-    for col = [1:z]
-      currentCol = input(:,col)
-      currentColors = output(:,col)
-      [certainlyBlack]=whiteColoredMeansOtherBlack(currentCol,currentColors)
-      for i=certainlyBlack
-        output(i,col)=zwart
-      end
-    end
-  end
-
   // TODO: This should be somehow refactored
   watchdog = 20
   changes = 99
@@ -159,6 +126,9 @@ function [output]=losOp(input)
   while changes>0 & watchdog>0
     changes = 0
     watchdog = watchdog-1
+    // techniques requiring the whole grid
+    /// only shade
+    // second rule of hitori, unshading around shaded square
     if %t
       certainlyWhite = unshadingAroundShaded(output)
       unshadingamount = length(certainlyWhite)
@@ -168,6 +138,8 @@ function [output]=losOp(input)
         output(i(1), i(2))=wit
       end
     end
+    /// shade and color
+    // whiteColoredMeansOtherBlack
     if %t
       whitechanges = 0
       // rows
