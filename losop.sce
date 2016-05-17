@@ -132,7 +132,7 @@ function [output]=losOp(input)
         tmpOutput = output
         tmpOutput(i,emptyPlace) = zwart
         tmpOutput = gridTechniques(input,tmpOutput)
-        if multipleNumbBlack(tmpOutput,input) & checkNoBlackCellsNextToEachother(tmpOutput) & isContinuousWhite(colorUnknownWhite(tmpOutput))
+        if multipleNumbBlack(input,tmpOutput) & checkNoBlackCellsNextToEachother(tmpOutput) & isContinuousWhite(colorUnknownWhite(tmpOutput))
           output = tmpOutput
         end
       end
@@ -140,6 +140,13 @@ function [output]=losOp(input)
   end
   if length(find(output == leeg)) > 0
     output = preGuessWork
+  end
+
+  if length(find(output == leeg))>0
+    disp("Sorry, maar deze puzzel kan ik nog niet oplossen")
+    return
+  else
+    return
   end
 
 endfunction
