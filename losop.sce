@@ -118,40 +118,32 @@ function [output]=losOp(input)
     end
   end
 
-  /// only shade
   // techniques requiring the whole grid
-  // second rule of hitori, unshading around shaded square
-  if %t
-    certainlyWhite = unshadingAroundShaded(output)
-    for i = certainlyWhite
-      output(i(1), i(2))=wit
-    end
-  end
+  output = gridTechniques(input,output)
 
-  /// shade and color
-  // whiteColoredMeansOtherBlack
-  if %t
-    // rows
-    for row = [1:z]
-      currentRow = input(row,:)
-      currentColors = output(row,:)
-      [certainlyBlack]=whiteColoredMeansOtherBlack(currentRow,currentColors)
-      for i=certainlyBlack
-        output(row,i)=zwart
-      end
-    end
-    // columns
-    for col = [1:z]
-      currentCol = input(:,col)
-      currentColors = output(:,col)
-      [certainlyBlack]=whiteColoredMeansOtherBlack(currentCol,currentColors)
-      for i=certainlyBlack
-        output(i,col)=zwart
+  // now the guesswork starts
+  z = sqrt(length(output))
+  for i = [1:z]
+    row = output(i,:)
+    emptyPlaces = find(row == leeg)
+    if (length(emptyPlaces)>0)
+      for emptyPlace = emptyPlaces
+        tmpOutput = output
+        tmpOutput(i,emptyPlace) = zwart
+        tmpOutput = gridTechniques(input,tmpOutput)
+        if multipleNumbBlack(tmpOutput,input) & checkNoBlackCellsNextToEachother(tmpOutput) & isContinuousWhite(colorUnknownWhite(tmpOutput))
+          output = tmpOutput
+        end
       end
     end
   end
 
-  // TODO: This should be somehow refactored
+endfunction
+
+// techniques requiring the whole grid
+// these techniques can be applied multiple times until they have no
+// effect any longer
+function [changedOutput]=gridTechniques(input,output)
   watchdog = 20
   changes = 99
   oldunshadingamount = 0
@@ -159,6 +151,9 @@ function [output]=losOp(input)
   while changes>0 & watchdog>0
     changes = 0
     watchdog = watchdog-1
+    // techniques requiring the whole grid
+    /// only shade
+    // second rule of hitori, unshading around shaded square
     if %t
       certainlyWhite = unshadingAroundShaded(output)
       unshadingamount = length(certainlyWhite)
@@ -168,6 +163,8 @@ function [output]=losOp(input)
         output(i(1), i(2))=wit
       end
     end
+    /// shade and color
+    // whiteColoredMeansOtherBlack
     if %t
       whitechanges = 0
       // rows
@@ -197,7 +194,7 @@ function [output]=losOp(input)
     output = whiteBecauseContinuous(output)
     changes = changes + length(find(output == oldOutput == %f))
   end
-
+  changedOutput = output
 endfunction
 
 // techniques only requiring a list of numbers
@@ -482,12 +479,12 @@ endfunction
 function isOk=checkNoBlackCellsNextToEachother(input)
     isOk=%t
     for i = 1:size(input, "r")
-      Crow = C(i,:)
+      Crow = input(i,:)
       if noBlackCellsNextToEachother(Crow) = %f
         isOk=%f
         return
       end
-      Ccol = C(:,i)
+      Ccol = input(:,i)
       if noBlackCellsNextToEachother(Ccol) = %f
         isOk=%f
         return
