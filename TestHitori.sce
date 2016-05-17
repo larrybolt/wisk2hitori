@@ -206,6 +206,8 @@ C12=[w w w w z
      w w w w w
      w z w w z]
 
+exec('extracases.sce', -1)
+
 function testlosOpTB()
   juist=[]
   tic()
@@ -233,6 +235,28 @@ function testlosOpTB()
   sS11 = losOp(N11)
   printf("Puzzel 12 oplossen\n\n")
   sS12 = losOp(N12)
+
+  printf("Puzzel 13 oplossen\n\n")
+  sS13 = losOp(N13)
+  printf("Puzzel 14 oplossen\n\n")
+  sS14 = losOp(N14)
+  printf("Puzzel 15 oplossen\n\n")
+  sS15 = losOp(N15)
+  printf("Puzzel 16 oplossen\n\n")
+  sS16 = losOp(N16)
+  printf("Puzzel 17 oplossen\n\n")
+  sS17 = losOp(N17)
+  printf("Puzzel 18 oplossen\n\n")
+  sS18 = losOp(N18)
+  printf("Puzzel 19 oplossen\n\n")
+  sS19 = losOp(N19)
+  printf("Puzzel 20 oplossen\n\n")
+  sS20 = losOp(N20)
+  printf("Puzzel 21 oplossen\n\n")
+  sS21 = losOp(N21)
+  printf("Puzzel 22 oplossen\n\n")
+  sS22 = losOp(N22)
+
   time = toc()
 
   nSolved = 0; nNotSolved = 0;
@@ -321,13 +345,76 @@ function testlosOpTB()
   else
     nNotSolved = nNotSolved+1
   end
+
+// own extra added
+  if isequal(sS13,C13) then
+    nSolved = nSolved+1
+    juist(teller) = 13
+  else
+    nNotSolved = nNotSolved+1
+  end
+  if isequal(sS14,C14) then
+    nSolved = nSolved+1
+    juist(teller) = 14
+  else
+    nNotSolved = nNotSolved+1
+  end
+  if isequal(sS15,C15) then
+    nSolved = nSolved+1
+    juist(teller) = 15
+  else
+    nNotSolved = nNotSolved+1
+  end
+  if isequal(sS16,C16) then
+    nSolved = nSolved+1
+    juist(teller) = 16
+  else
+    nNotSolved = nNotSolved+1
+  end
+  if isequal(sS17,C17) then
+    nSolved = nSolved+1
+    juist(teller) = 17
+  else
+    nNotSolved = nNotSolved+1
+  end
+  if isequal(sS18,C18) then
+    nSolved = nSolved+1
+    juist(teller) = 18
+  else
+    nNotSolved = nNotSolved+1
+  end
+  if isequal(sS19,C19) then
+    nSolved = nSolved+1
+    juist(teller) = 19
+  else
+    nNotSolved = nNotSolved+1
+  end
+  if isequal(sS20,C20) then
+    nSolved = nSolved+1
+    juist(teller) = 20
+  else
+    nNotSolved = nNotSolved+1
+  end
+  if isequal(sS21,C21) then
+    nSolved = nSolved+1
+    juist(teller) = 21
+  else
+    nNotSolved = nNotSolved+1
+  end
+  if isequal(sS22,C22) then
+    nSolved = nSolved+1
+    juist(teller) = 22
+  else
+    nNotSolved = nNotSolved+1
+  end
+
   printf("Aantal correct opgeloste puzzels = %d, nl volgende:\n",nSolved)
   disp(juist')
 
   printf("Aantal onvolledig of verkeerd opgeloste puzzels = %d\n",nNotSolved)
 
 
-  [Pjuist, Pleeg, Pfout,totaalvakjes] = percentageCorrIngevuld(list(N1, N2, N3, N4, N5, N6,N7,N8,N9,N10,N11,N12),list(sS1, sS2, sS3, sS4, sS5, sS6,sS7,sS8,sS9,sS10,sS11,sS12), list(C1, C2, C3, C4, C5, C6,C7,C8,C9,C10,C11,C12));
+  [Pjuist, Pleeg, Pfout,totaalvakjes] = percentageCorrIngevuld( list(N1, N2, N3, N4, N5, N6,N7,N8,N9,N10,N11,N12,N13,N14,N15,N16,N17,N18,N19,N20,N21,N22), list(sS1, sS2, sS3, sS4, sS5, sS6,sS7,sS8,sS9,sS10,sS11,sS12,sS13,sS14,sS15,sS16,sS17,sS18,sS19,sS20,sS21,sS22), list(C1, C2, C3, C4, C5, C6,C7,C8,C9,C10,C11,C12,C13,C14,C15,C16,C17,C18,C19,C20,C21,C22));
 
   Pjuistper = round(Pjuist/totaalvakjes*100)
   Pleegper = round(Pleeg/totaalvakjes*100)
