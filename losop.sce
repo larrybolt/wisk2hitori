@@ -138,6 +138,8 @@ function [output]=losOp(input)
     end
   end
 
+  // we should not do this technique, it gives errors
+  // at this point you have to solve them recursively
   z = sqrt(length(output))
   for i = [1:z]
     row = output(i,:)
