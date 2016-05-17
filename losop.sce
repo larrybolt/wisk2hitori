@@ -121,6 +121,23 @@ function [output]=losOp(input)
   // techniques requiring the whole grid
   output = gridTechniques(input,output)
 
+  // now the guesswork starts
+  z = sqrt(length(output))
+  for i = [1:z]
+    row = output(i,:)
+    emptyPlaces = find(row == leeg)
+    if (length(emptyPlaces)>0)
+      for emptyPlace = emptyPlaces
+        tmpOutput = output
+        tmpOutput(i,emptyPlace) = zwart
+        tmpOutput = gridTechniques(input,tmpOutput)
+        if multipleNumbBlack(tmpOutput,input) & checkNoBlackCellsNextToEachother(tmpOutput) & isContinuousWhite(colorUnknownWhite(tmpOutput))
+          output = tmpOutput
+        end
+      end
+    end
+  end
+
 endfunction
 
 // techniques requiring the whole grid
@@ -462,12 +479,12 @@ endfunction
 function isOk=checkNoBlackCellsNextToEachother(input)
     isOk=%t
     for i = 1:size(input, "r")
-      Crow = C(i,:)
+      Crow = input(i,:)
       if noBlackCellsNextToEachother(Crow) = %f
         isOk=%f
         return
       end
-      Ccol = C(:,i)
+      Ccol = input(:,i)
       if noBlackCellsNextToEachother(Ccol) = %f
         isOk=%f
         return
