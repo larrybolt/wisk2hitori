@@ -118,7 +118,15 @@ function [output]=losOp(input)
     end
   end
 
-  // TODO: This should be somehow refactored
+  // techniques requiring the whole grid
+  output = gridTechniques(input,output)
+
+endfunction
+
+// techniques requiring the whole grid
+// these techniques can be applied multiple times until they have no
+// effect any longer
+function [changedOutput]=gridTechniques(input,output)
   watchdog = 20
   changes = 99
   oldunshadingamount = 0
@@ -169,7 +177,7 @@ function [output]=losOp(input)
     output = whiteBecauseContinuous(output)
     changes = changes + length(find(output == oldOutput == %f))
   end
-
+  changedOutput = output
 endfunction
 
 // techniques only requiring a list of numbers
