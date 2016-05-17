@@ -138,22 +138,11 @@ function [output]=losOp(input)
     end
   end
 
-  // we should not do this technique, it gives errors
-  // at this point you have to solve them recursively
-  z = sqrt(length(output))
-  for i = [1:z]
-    row = output(i,:)
-    emptyPlaces = find(row == leeg)
-    if (length(emptyPlaces)>0)
-      for emptyPlace = emptyPlaces
-        tmpOutput = output
-        tmpOutput(i,emptyPlace) = wit
-        tmpOutput = gridTechniques(input,tmpOutput)
-        if multipleNumbBlack(input,tmpOutput) & checkNoBlackCellsNextToEachother(tmpOutput) & isContinuousWhite(colorUnknownWhite(tmpOutput))
-          output = tmpOutput
-        end
-      end
-    end
+  if length(find(output == leeg))>0
+    disp("Sorry, maar deze puzzel kan ik nog niet oplossen")
+    return
+  else
+    return
   end
 
 endfunction
