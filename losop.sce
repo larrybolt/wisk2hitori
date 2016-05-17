@@ -131,7 +131,23 @@ function [output]=losOp(input)
         tmpOutput = output
         tmpOutput(i,emptyPlace) = zwart
         tmpOutput = gridTechniques(input,tmpOutput)
-        if multipleNumbBlack(tmpOutput,input) & checkNoBlackCellsNextToEachother(tmpOutput) & isContinuousWhite(colorUnknownWhite(tmpOutput))
+        if multipleNumbBlack(input,tmpOutput) & checkNoBlackCellsNextToEachother(tmpOutput) & isContinuousWhite(colorUnknownWhite(tmpOutput))
+          output = tmpOutput
+        end
+      end
+    end
+  end
+
+  z = sqrt(length(output))
+  for i = [1:z]
+    row = output(i,:)
+    emptyPlaces = find(row == leeg)
+    if (length(emptyPlaces)>0)
+      for emptyPlace = emptyPlaces
+        tmpOutput = output
+        tmpOutput(i,emptyPlace) = wit
+        tmpOutput = gridTechniques(input,tmpOutput)
+        if multipleNumbBlack(input,tmpOutput) & checkNoBlackCellsNextToEachother(tmpOutput) & isContinuousWhite(colorUnknownWhite(tmpOutput))
           output = tmpOutput
         end
       end
