@@ -202,4 +202,25 @@ assert_checkequal(%t,isValidHitori(N10,C10))
 assert_checkequal(%t,isValidHitori(N11,C11))
 assert_checkequal(%t,isValidHitori(N12,C12))
 
+COk = [0    1    1    0    1
+       1    1    0    1   -1
+       0    1    1    0    1
+       1    0    1    1    1
+       1    1   -1   -1    1]
+// how it would be if all would be colored white that are unknown
+Caw = [0    1    1    0    1
+       1    1    0    1    1
+       0    1    1    0    1
+       1    0    1    1    1
+       1    1    1    1    1]
+assert_checkequal(Caw,colorUnknownWhite(COk))
+assert_checkequal(%t,isContinuousWhite(colorUnknownWhite(COk)))
+// how it should be after the function
+Csol = [0    1    1    0    1
+        1    1    0    1    1
+        0    1    1    0    1
+        1    0    1    1    1
+        1    1    1   -1    1]
+assert_checkequal(Csol,whiteBecauseContinuous(COk))
+
 quit

@@ -193,6 +193,9 @@ function [output]=losOp(input)
       changes = changes + (whitechanges - oldwhitechanges)
       oldwhitechanges = whitechanges
     end
+    oldOutput = output
+    output = whiteBecauseContinuous(output)
+    changes = changes + length(find(output == oldOutput == %f))
   end
 
 endfunction
@@ -394,6 +397,38 @@ function [certainlyWhite]=noConflictMeansW(input)
   end
 endfunction
 
+// find black cells and check if they would kill continuous because of black
+function [CChanged]=whiteBecauseContinuous(C)
+  CChanged = C
+  z = sqrt(length(C))
+  for i = [1:z]
+    row = C(i,:)
+    emptyPlaces = find(row == leeg)
+    if (length(emptyPlaces)>0)
+      for emptyPlace = emptyPlaces
+        tmpC = C
+        tmpC(i,emptyPlace) = zwart
+        if isContinuousWhite(colorUnknownWhite(tmpC)) == %f
+          CChanged(i,emptyPlace) = wit
+        end
+      end
+    end
+  end
+endfunction
+
+// we need to color all cells white that are unknown to check what a cell
+// change to black would do to continuousness
+function [output]=colorUnknownWhite(input)
+  output = input
+  z = sqrt(length(input))
+  for i = [1:z]
+    for j = [1:z]
+      if input(i,j) == leeg
+        output(i,j) = wit
+      end
+    end
+  end
+endfunction
 
 // ISVALID part
 // Make a function that tests whether a solution for a hitori is a valid one, probably checking the rules:
